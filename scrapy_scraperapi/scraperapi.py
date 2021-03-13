@@ -20,7 +20,6 @@
 
 import urllib.parse
 import logging
-from w3lib.http import basic_auth_header
 
 log = logging.getLogger('scrapy.scraperapi')
 
@@ -41,4 +40,5 @@ class ScraperApiProxy(object):
 
         if self.scraperapi_key:
             request.meta['proxy'] = "http://scraperapi:{}@proxy-server.scraperapi.com:8001".format(self.scraperapi_key)
+            log.info('requesting {} using scraperapi'.format(request.url))
             return request
