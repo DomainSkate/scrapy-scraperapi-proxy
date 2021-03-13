@@ -20,6 +20,7 @@
 
 import urllib.parse
 import logging
+from w3lib.http import basic_auth_header
 
 log = logging.getLogger('scrapy.scraperapi')
 
@@ -37,12 +38,7 @@ class ScraperApiProxy(object):
         if not self.scraperapi_ena:
             log.warning("Skipping Scraper API CALL(disabled)!")
             return
-        #Override request url
-        if self.scraperapi_url not in request.url: 
-            k_name = 'api_key'
-            new_url = 'https://{}/?{}={}&url={}'.format(
-                self.scraperapi_url, k_name,
-                self.scraperapi_key, urllib.parse.quote(request.url))
 
-            log.debug('Using Scraper API, overridden URL is: {}'.format(new_url))
-            return request.replace(url=new_url)
+        if self.scraperapi_key:
+            request.meta['proxy'] = "http://scraperapi:{}@proxy-server.scraperapi.com:8001".format(self.scraperapi_key)
+            return request
