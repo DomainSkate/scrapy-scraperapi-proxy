@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import urllib
+import urllib.parse
 import logging
 
 log = logging.getLogger('scrapy.scraperapi')
@@ -40,7 +40,9 @@ class ScraperApiProxy(object):
         #Override request url
         if self.scraperapi_url not in request.url: 
             k_name = 'api_key'
-            new_url = 'https://%s/?%s=%s&url=%s' % (self.scraperapi_url, k_name, self.scraperapi_key, urllib.quote(request.url))
-            log.debug('Using Scraper API, overridden URL is: %s' % (new_url))
+            new_url = 'https://%s/?%s=%s&url=%s'.format(
+                self.scraperapi_url, k_name,
+                self.scraperapi_key, urllib.parse.quote(request.url))
+
+            log.debug('Using Scraper API, overridden URL is: %s'.format(new_url))
             return request.replace(url=new_url)
-        
