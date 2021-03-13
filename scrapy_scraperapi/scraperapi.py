@@ -40,9 +40,9 @@ class ScraperApiProxy(object):
         #Override request url
         if self.scraperapi_url not in request.url: 
             k_name = 'api_key'
-            new_url = 'https://%s/?%s=%s&url=%s'.format(
+            new_url = 'https://{}/?{}={}&url={}'.format(
                 self.scraperapi_url, k_name,
                 self.scraperapi_key, urllib.parse.quote(request.url))
 
-            log.debug('Using Scraper API, overridden URL is: %s'.format(new_url))
+            log.debug('Using Scraper API, overridden URL is: {}'.format(new_url))
             return request.replace(url=new_url)
